@@ -16,10 +16,11 @@ import Axios from "axios";
 import Authentication from "./pages/Authentication";
 import Home from "./pages/Home";
 import Logout from "./pages/Logout";
-import SmclustersEMR01 from "./pages/Sm-clustersEMR-01";
-import EmrEc201 from "./pages/Sm-emr-ec2-01";
-import EmrEc202 from "./pages/Sm-emr-ec2-02";
-import EmrEc203 from "./pages/Sm-emr-ec2-03";
+import EmrEc2Single01 from "./pages/Sm-emr-ec2-single-01";
+import EmrEc2Single02 from "./pages/Sm-emr-ec2-single-02";
+import EmrEc2Single03 from "./pages/Sm-emr-ec2-single-03";
+import EmrEc2Multi01 from "./pages/Sm-emr-ec2-multi-01";
+import EmrEc2Multi02 from "./pages/Sm-emr-ec2-multi-02";
 import SmAppUpdate from "./pages/Sm-appUpdate";
 
 
@@ -58,10 +59,11 @@ Axios.get(`/aws-exports.json`,).then((data)=>{
               <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<ProtectedApp><Home /> </ProtectedApp>} />
-                    <Route path="/emr/clusters/" element={<ProtectedApp><SmclustersEMR01 /> </ProtectedApp>} />
-                    <Route path="/emr/sm-emr-ec2-01/" element={<ProtectedApp><EmrEc201 /> </ProtectedApp>} />
-                    <Route path="/emr/sm-emr-ec2-02/" element={<ProtectedApp><EmrEc202 /> </ProtectedApp>} />
-                    <Route path="/emr/sm-emr-ec2-03/" element={<ProtectedApp><EmrEc203 /> </ProtectedApp>} />
+                    <Route path="/emr/sm-emr-ec2-single-01/" element={<ProtectedApp><EmrEc2Single01 /> </ProtectedApp>} />
+                    <Route path="/emr/sm-emr-ec2-single-02/" element={<ProtectedApp><EmrEc2Single02 /> </ProtectedApp>} />
+                    <Route path="/emr/sm-emr-ec2-single-03/" element={<ProtectedApp><EmrEc2Single03 /> </ProtectedApp>} />
+                    <Route path="/emr/sm-emr-ec2-multi-01/" element={<ProtectedApp><EmrEc2Multi01 /> </ProtectedApp>} />
+                    <Route path="/emr/sm-emr-ec2-multi-02/" element={<ProtectedApp><EmrEc2Multi02 /> </ProtectedApp>} />
                     <Route path="/authentication" element={<Authentication />} />
                     <Route path="/logout" element={<ProtectedApp><Logout /> </ProtectedApp>} />
                     <Route path="/updates" element={<ProtectedApp><SmAppUpdate /> </ProtectedApp>} />

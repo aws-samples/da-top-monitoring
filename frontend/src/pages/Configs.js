@@ -35,8 +35,8 @@ export const SideMainLayoutMenu = [
       type: 'section',
       defaultExpanded: true,
       items: [
-          { type: "link", text: "Clusters", href: "/emr/clusters" },
-          { type: "link", text: "Dashboard", href: "/emr/sm-emr-ec2-03" },
+          { type: "link", text: "Single-Cluster", href: "/emr/sm-emr-ec2-single-01" },
+          { type: "link", text: "Multi-Cluster", href: "/emr/sm-emr-ec2-multi-01" },
       ],
     },
     { type: "divider" },

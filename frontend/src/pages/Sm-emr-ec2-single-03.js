@@ -26,6 +26,7 @@ import CustomTable02 from "../components/Table02";
 import ChartRadialBar01 from '../components/ChartRadialBar01';
 import ChartPie01 from '../components/ChartPie-01';
 import ChartColumn01  from '../components/ChartColumn01';
+import ChartTimeLine01  from '../components/ChartTimeLine01';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -97,7 +98,7 @@ function Application() {
                   {id: 'recv_bytes',header: 'NetBytesRecv',cell: item => customFormatNumberLong(parseFloat(item['recv_bytes']),2),ariaLabel: createLabelFunction('recv_bytes'),sortingField: 'recv_bytes',},
     ];
     
-    const visibleContentNodes = ['instance_id','cluster_id', 'group_id', 'role', 'instance_type', 'market_type', 'az', 'total_vcpu','total_memory', 'cpu_usage', 'memory_usage', 'total_disk_bytes', 'total_iops', 'total_network_bytes'];
+    const visibleContentNodes = ['instance_id','role', 'instance_type', 'market_type', 'az', 'total_vcpu','total_memory', 'cpu_usage', 'memory_usage', 'total_disk_bytes', 'total_iops', 'total_network_bytes'];
     
     
     //-- Table Steps
@@ -155,6 +156,7 @@ function Application() {
                                                                                                 instanceTypes       : [],
                                                                                                 marketTypes         : [],
                                                                                                 roles               : [],
+                                                                                                stepsLifeCycle      : [],
                                                                                                 
                                                                             },
                                                         },
@@ -289,6 +291,7 @@ function Application() {
                       params: params, 
                   }).then((data)=>{
                       setClusterStats(data.data); 
+                      console.log(data.data);
             })
             .catch((err) => {
                       console.log('Timeout API Call : /api/aws/emr/cluster/gather/stats' );
@@ -384,7 +387,7 @@ function Application() {
       <AppLayout
             disableContentPaddings
             toolsHide
-            navigation={<SideNavigation activeHref={"/emr/clusters"} items={SideMainLayoutMenu} header={SideMainLayoutHeader} />}
+            navigation={<SideNavigation activeHref={"/emr/sm-emr-ec2-single-01"} items={SideMainLayoutMenu} header={SideMainLayoutHeader} />}
             contentType="default"
             splitPanelOpen={splitPanelShow}
             splitPanelOpen={splitPanelShow}
@@ -547,7 +550,7 @@ function Application() {
                         <BreadcrumbGroup
                               items={[
                                 { text: "EMR", href: "#" },
-                                { text: "Clusters", href: "/emr/clusters" },
+                                { text: "Single-Cluster", href: "/emr/sm-emr-ec2-single-01" },
                                 { text: "Live Monitoring", href: "#" },
                                 { text: parameter_object_values["clusterId"] },
                               ]}
@@ -592,7 +595,7 @@ function Application() {
                     </table>
                     
                     <div style={{"padding" : "1em"}}>
-                            <Container header={<Header variant="h2">Cluster Summary</Header>} >
+                            <Container header={<Header variant="h2">Single-Cluster Live Monitoring</Header>} >
                                 <table style={{"width":"100%", "padding": "1em"}}>
                                     <tr>
                                         <td style={{ "width":"10%", "text-align" : "center"}}>
@@ -638,7 +641,7 @@ function Application() {
                                         </td>
                                         <td valign="top" style={{ "width":"15%", "text-align" : "center"}}>
                                             <ChartPie01 
-                                                    title={"Instances by Class"} 
+                                                    title={"Instances by Type"} 
                                                     height="300px" 
                                                     width="100%" 
                                                     dataset = { JSON.stringify(clusterStats['host']?.['charts']?.['instanceTypes']) }
@@ -646,7 +649,7 @@ function Application() {
                                         </td>
                                         <td valign="top" style={{ "width":"15%", "text-align" : "center"}}>
                                             <ChartPie01 
-                                                    title={"Instances by Market"} 
+                                                    title={"Instances by Purchase Option"} 
                                                     height="300px" 
                                                     width="100%" 
                                                     dataset = { JSON.stringify(clusterStats['host']?.['charts']?.['marketTypes']) }
@@ -655,7 +658,7 @@ function Application() {
                                         
                                         <td valign="top" style={{ "width":"15%", "text-align" : "center"}}>
                                             <ChartPie01 
-                                                    title={"Instances by Role"} 
+                                                    title={"Instances by Node Type"} 
                                                     height="300px" 
                                                     width="100%" 
                                                     dataset = { JSON.stringify(clusterStats['host']?.['charts']?.['roles']) }
@@ -666,7 +669,7 @@ function Application() {
                                             <ChartColumn01 
                                                     series={JSON.stringify(clusterStats['host']?.['charts']?.['rolesColumn']?.['series'])}
                                                     categories={JSON.stringify(clusterStats['host']?.['charts']?.['rolesColumn']?.['categories'])} 
-                                                    title={"Instances by Role"} height="300px" 
+                                                    title={"Instances by Node Type"} height="300px" 
                                             />
                                         </td>
                                         
@@ -684,7 +687,7 @@ function Application() {
                                 activeTabId={activeSubTabId}
                                 tabs={[
                                   {
-                                    label: "CPU Resources",
+                                    label: "CPU Usage",
                                     id: "tab02-01",
                                     content: 
                                             <div style={{"padding-top" : "1em", "padding-bottom" : "1em"}}>
@@ -767,7 +770,7 @@ function Application() {
                                             </div>  
                                           },
                                           {
-                                            label: "Memory Resources",
+                                            label: "Memory Usage",
                                             id: "tab02-02",
                                             content: 
                                                 <div style={{"padding-top" : "1em", "padding-bottom" : "1em"}}>
@@ -851,7 +854,7 @@ function Application() {
                                             
                                           },
                                           {
-                                            label: "Network Resources",
+                                            label: "Network Throughput",
                                             id: "tab02-03",
                                             content: 
                                                 <div style={{"padding-top" : "1em", "padding-bottom" : "1em"}}>
@@ -916,7 +919,7 @@ function Application() {
                                             
                                           },
                                           {
-                                            label: "Disk Resources",
+                                            label: "Disk Throughput",
                                             id: "tab02-04",
                                             content: 
                                                 <div style={{"padding-top" : "1em", "padding-bottom" : "1em"}}>
@@ -1044,6 +1047,16 @@ function Application() {
                                             content: 
                                                 <div style={{"padding-top" : "1em", "padding-bottom" : "1em"}}>
                                                     <Container>
+                                                        <ChartTimeLine01 
+                                                                series={JSON.stringify(clusterStats['host']?.['charts']?.['stepsLifeCycle'])} 
+                                                                title={"Steps LifeCycle"} 
+                                                                height="300px" 
+                                                                onClickData={(element) => {
+                                                                                    console.log(element);
+                                                                                }
+                                                                }
+                                                                toolbar={true}
+                                                        />
                                                         <CustomTable02
                                                                 columnsTable={columnsTableSteps}
                                                                 visibleContent={visibleContentSteps}
@@ -1084,7 +1097,7 @@ function Application() {
                                             
                                           },
                                           {
-                                            label: "Instance Management",
+                                            label: "Instances (Hardware)",
                                             id: "tab02-06",
                                             content: 
                                                 <div style={{"padding-top" : "1em", "padding-bottom" : "1em"}}>
@@ -1095,14 +1108,14 @@ function Application() {
                                                                     <ChartColumn01 
                                                                             series={JSON.stringify(clusterStats['host']?.['charts']?.['instanceTypesColumn']?.['series'])}
                                                                             categories={JSON.stringify(clusterStats['host']?.['charts']?.['instanceTypesColumn']?.['categories'])} 
-                                                                            title={"Instances by Class"} height="300px" 
+                                                                            title={"Instances by Type"} height="300px" 
                                                                     />
                                                                 </td>
                                                                 <td style={{ "width":"50%", "text-align" : "center"}}>
                                                                     <ChartColumn01 
                                                                             series={JSON.stringify(clusterStats['host']?.['charts']?.['instanceMarketColumn']?.['series'])}
                                                                             categories={JSON.stringify(clusterStats['host']?.['charts']?.['instanceMarketColumn']?.['categories'])} 
-                                                                            title={"Instances by Market"} height="300px" 
+                                                                            title={"Instances by Purchase Option"} height="300px" 
                                                                     />
                                                                 </td>
                                                             </tr>
@@ -1115,7 +1128,9 @@ function Application() {
                                         ]}
                                 
                             />
-                                            
+                            
+                            { (activeSubTabId === "tab02-01" || activeSubTabId === "tab02-02" || activeSubTabId === "tab02-03" || activeSubTabId === "tab02-04")   &&
+                            
                             <Container>
                                 <CustomTable02
                                         columnsTable={columnsTableNodes}
@@ -1137,6 +1152,7 @@ function Application() {
                                         }
                                 />
                             </Container>
+                            }
                                 
                     </div>
                 

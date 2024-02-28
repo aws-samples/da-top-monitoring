@@ -33,7 +33,7 @@ function Home() {
           setVersionMessage([
                               {
                                 type: "info",
-                                content: "New Application version is available, new features and modules will improve workload capabilities and user experience.",
+                                content: "New Application version is available, new features and modules will improve monitoring capabilities and user experience.",
                                 dismissible: true,
                                 dismissLabel: "Dismiss message",
                                 onDismiss: () => setVersionMessage([]),
@@ -125,7 +125,7 @@ function Home() {
                                                   Start monitoring to your AWS EMR clusters.
                                               </Box>
                                               <br/>
-                                              <Button variant="primary" href="/emr/clusters/" >Get Started</Button>
+                                              <Button variant="primary" href="/emr/sm-emr-ec2-single-01" >Get Started</Button>
                                               <br/>
                                               <br/>
                                             </div>

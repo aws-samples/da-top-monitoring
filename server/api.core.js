@@ -367,6 +367,61 @@ app.get("/api/aws/emr/cluster/gather/global/metrics", async (req, res) => {
         }
 });
 
+
+//--++ EMR - EC2 : Gather Stats
+app.get("/api/aws/emr/cluster/gather/global/live/metrics", async (req, res) => {
+
+        // Token Validation
+        var cognitoToken = verifyTokenCognito(req.headers['x-token-cognito']);
+    
+        if (cognitoToken.isValid === false)
+            return res.status(511).send({ data: [], message : "Token is invalid"});
+        
+        try
+            {
+                var params = req.query;
+                
+                const parameter = {};
+                
+                const EMRGlobal = new classEMRGlobal();
+                var metrics = await EMRGlobal.getGlobalClusterLiveMetrics(parameter);
+                res.status(200).send({ ... metrics });
+                
+        }
+        catch(err){
+                console.log(err);
+        }
+});
+
+
+
+//--++ EMR - EC2 : Gather Stats Cluster Stats by Cluster
+app.get("/api/aws/emr/cluster/gather/global/live/metrics/details", async (req, res) => {
+
+        // Token Validation
+        var cognitoToken = verifyTokenCognito(req.headers['x-token-cognito']);
+    
+        if (cognitoToken.isValid === false)
+            return res.status(511).send({ data: [], message : "Token is invalid"});
+        
+        try
+            {
+                var params = req.query;
+                
+                const parameter = { clusterId : params.clusterId, period : params.period };
+                
+                const EMRGlobal = new classEMRGlobal();
+                var metrics = await EMRGlobal.getClusterStatsDetails(parameter);
+                res.status(200).send({ ... metrics });
+                
+        }
+        catch(err){
+                console.log(err);
+        }
+});
+
+
+
 //--################################################################################################################
 //--------------------------------------------  TIMESTREAM
 //--################################################################################################################

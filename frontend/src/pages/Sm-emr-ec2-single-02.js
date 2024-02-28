@@ -125,9 +125,9 @@ function Application() {
                                                             memory          : [],
                                                             jobsRunning     : [],
                                                             stepsLifeCycle  : [],
-                                                            cpuUsage        : { p10 : [], p50 : [], p90 : [] } ,
-                                                            memoryUsage     : { p10 : [], p50 : [], p90 : [] } ,
-                                                            coresUsage      : { p10 : [], p50 : [], p90 : [] } ,
+                                                            cpuUsage        : { avg : [], max : [], min : [], p10 : [], p50 : [], p90 : [] } ,
+                                                            memoryUsage     : { avg : [], max : [], min : [], p10 : [], p50 : [], p90 : [] } ,
+                                                            coresUsage      : { avg : [], max : [], min : [], p10 : [], p50 : [], p90 : [] } ,
                                                             roles           : { categories : [], series : [] },
                                                             instanceType    : { categories : [], series : [] },
                                                             instanceMarket  : { categories : [], series : [] }, 
@@ -140,13 +140,13 @@ function Application() {
     var dateFilter = useRef({ type: "absolute", "startDate" : parameter_object_values["startDate"],  "endDate" : parameter_object_values["endDate"] });
     
     const [selectedOptions,setSelectedOptions] = useState([
-                                                            { label: "Cores Total", value: "1"},
-                                                            { label: "Cores Usage(%)", value: "2"},
+                                                            { label: "Cores Total in Worker Nodes", value: "1"},
+                                                            { label: "Cores Usage(%) in Worker Nodes", value: "2"},
                                                             { label: "CPU Usage(%)", value: "3"},
                                                             { label: "Instances Distribution", value: "4"},
-                                                            { label: "Instances by Class", value: "5"},
-                                                            { label: "Instances by Market", value: "6"},
-                                                            { label: "Instances by Role", value: "7"},
+                                                            { label: "Instances by Type", value: "5"},
+                                                            { label: "Instances by Purchase Option", value: "6"},
+                                                            { label: "Instances by Node Type", value: "7"},
                                                             { label: "Jobs Running", value: "8"},
                                                             { label: "Memory Total(GB)", value: "9"},
                                                             { label: "Memory Usage(%)", value: "10"},
@@ -241,14 +241,14 @@ function Application() {
       <CustomHeader/>
       <AppLayout
             toolsHide
-            navigation={<SideNavigation activeHref={"/emr/clusters"} items={SideMainLayoutMenu} header={SideMainLayoutHeader} />}
+            navigation={<SideNavigation activeHref={"/emr/sm-emr-ec2-single-01"} items={SideMainLayoutMenu} header={SideMainLayoutHeader} />}
             contentType="default"
             content={
                 <ContentLayout disableOverlap>
                     <BreadcrumbGroup
                           items={[
                             { text: "EMR", href: "#" },
-                            { text: "Clusters", href: "/emr/clusters" },
+                            { text: "Single-Cluster", href: "/emr/sm-emr-ec2-single-01" },
                             { text: "Insight Monitoring", href: "#"},
                             { text: parameter_object_values["clusterId"] , href: "#"}
                           ]}
@@ -358,13 +358,13 @@ function Application() {
                                                 setSelectedOptions(detail.selectedOptions)
                                               }
                                               options={[
-                                                { label: "Cores Total", value: "1"},
-                                                { label: "Cores Usage(%)", value: "2"},
+                                                { label: "Cores Total in Worker Nodes", value: "1"},
+                                                { label: "Cores Usage(%) in Worker Nodes", value: "2"},
                                                 { label: "CPU Usage(%)", value: "3"},
                                                 { label: "Instances Distribution", value: "4"},
-                                                { label: "Instances by Class", value: "5"},
-                                                { label: "Instances by Market", value: "6"},
-                                                { label: "Instances by Role", value: "7"},
+                                                { label: "Instances by Type", value: "5"},
+                                                { label: "Instances by Purchase Option", value: "6"},
+                                                { label: "Instances by Node Type", value: "7"},
                                                 { label: "Jobs Running", value: "8"},
                                                 { label: "Memory Total(GB)", value: "9"},
                                                 { label: "Memory Usage(%)", value: "10"},
@@ -406,7 +406,7 @@ function Application() {
                                     </div>
                                     <div>
                                         <ChartPie01 
-                                                title={"Instances by Market"} 
+                                                title={"Instances by Purchase Option"} 
                                                 height="300px" 
                                                 width="100%" 
                                                 dataset = { JSON.stringify(globalStats['charts']?.['globalInstanceMarket']) }
@@ -414,7 +414,7 @@ function Application() {
                                     </div>
                                     <div>
                                       <ChartPie01 
-                                                title={"Instances by Role"} 
+                                                title={"Instances by Node Type"} 
                                                 height="300px" 
                                                 width="100%" 
                                                 dataset = { JSON.stringify(globalStats['charts']?.['globalInstanceRole']) }
@@ -580,13 +580,13 @@ function Application() {
                         </div>
                     }
                     
-                    { chartSelected("Instances by Role",selectedOptions) === true  &&
+                    { chartSelected("Instances by Node Type",selectedOptions) === true  &&
                         <div>
                             <Container header={
                                                 <Header
                                                   variant="h2"
                                                 >
-                                                  Instances by Role
+                                                  Instances by Node Type
                                                 </Header>
                                                 }
                             >  
@@ -602,20 +602,20 @@ function Application() {
                         </div>
                     }
                         
-                    { chartSelected("Instances by Class",selectedOptions) === true  &&
+                    { chartSelected("Instances by Type",selectedOptions) === true  &&
                         <div>
                             <Container header={
                                                 <Header
                                                   variant="h2"
                                                 >
-                                                  Instances by Class
+                                                  Instances by Type
                                                 </Header>
                                                 }
                             >  
                                 <ChartColumn01 
                                         series={JSON.stringify(globalStats['charts']?.['instanceType']?.['series'])}
                                         categories={JSON.stringify(globalStats['charts']?.['instanceType']?.['categories'])} 
-                                        title={"Instances by Class"} height="300px" 
+                                        title={""} height="300px" 
                                         toolbar={true}
                                 />
                             </Container>  
@@ -624,13 +624,13 @@ function Application() {
                     }
                         
                         
-                    { chartSelected("Instances by Market",selectedOptions) === true  &&
+                    { chartSelected("Instances by Purchase Option",selectedOptions) === true  &&
                         <div>
                             <Container header={
                                                 <Header
                                                   variant="h2"
                                                 >
-                                                  Instances by Market
+                                                  Instances by Purchase Option
                                                 </Header>
                                                 }
                             >  
@@ -658,6 +658,9 @@ function Application() {
                                                 }
                             >  
                                 <ChartDots01 series={JSON.stringify([
+                                           { name : "avg", data : globalStats['charts']?.['cpuUsage']?.['avg'] },
+                                           { name : "max", data : globalStats['charts']?.['cpuUsage']?.['max'] },
+                                           { name : "min", data : globalStats['charts']?.['cpuUsage']?.['min'] },
                                            { name : "p10", data : globalStats['charts']?.['cpuUsage']?.['p10'] },
                                            { name : "p50", data : globalStats['charts']?.['cpuUsage']?.['p50'] },
                                            { name : "p90", data : globalStats['charts']?.['cpuUsage']?.['p90'] },
@@ -672,15 +675,64 @@ function Application() {
                         </div>
                     }    
                     
-                    
-                    
-                    { chartSelected("Cores Total",selectedOptions) === true  &&
+                    { chartSelected("Memory Total(GB)",selectedOptions) === true  &&
                         <div>
                             <Container header={
                                                 <Header
                                                   variant="h2"
                                                 >
-                                                  Cores Total
+                                                  Memory Total(GB)
+                                                </Header>
+                                                }
+                            >
+                                <ChartDots01 series={JSON.stringify([
+                                           { name : "memory", data : globalStats['charts']?.['memory'] }
+                                        ])} 
+                                        title={""} 
+                                        height="300px" 
+                                        toolbar={true}
+                                />
+                            </Container>  
+                            <br/>
+                        </div>
+                        }
+                        
+                        { chartSelected("Memory Usage(%)",selectedOptions) === true  &&
+                        <div>
+                            <Container header={
+                                                <Header
+                                                  variant="h2"
+                                                >
+                                                  Memory Usage(%)
+                                                </Header>
+                                                }
+                            >
+                                <ChartDots01 series={JSON.stringify([
+                                           { name : "avg", data : globalStats['charts']?.['memoryUsage']?.['avg'] },
+                                           { name : "max", data : globalStats['charts']?.['memoryUsage']?.['max'] },
+                                           { name : "min", data : globalStats['charts']?.['memoryUsage']?.['min'] },
+                                           { name : "p10", data : globalStats['charts']?.['memoryUsage']?.['p10'] },
+                                           { name : "p50", data : globalStats['charts']?.['memoryUsage']?.['p50'] },
+                                           { name : "p90", data : globalStats['charts']?.['memoryUsage']?.['p90'] },
+                                        ])} 
+                                        title={""} 
+                                        height="300px" 
+                                        toolbar={true}
+                                        ymax={100}
+                                />
+                            </Container>  
+                            <br/>
+                        </div>
+                        }
+                    
+                    
+                    { chartSelected("Cores Total in Worker Nodes",selectedOptions) === true  &&
+                        <div>
+                            <Container header={
+                                                <Header
+                                                  variant="h2"
+                                                >
+                                                  Cores Total in Worker Nodes
                                                 </Header>
                                                 }
                             >  
@@ -697,17 +749,20 @@ function Application() {
                         }
                         
                         
-                        { chartSelected("Cores Usage(%)",selectedOptions) === true  &&
+                        { chartSelected("Cores Usage(%) in Worker Nodes",selectedOptions) === true  &&
                         <div>
                             <Container header={
                                                 <Header
                                                   variant="h2"
                                                 >
-                                                  Cores Usage(%)
+                                                  Cores Usage(%) in Worker Nodes
                                                 </Header>
                                                 }
                             >  
                                 <ChartDots01 series={JSON.stringify([
+                                           { name : "avg", data : globalStats['charts']?.['coresUsage']?.['avg'] },
+                                           { name : "max", data : globalStats['charts']?.['coresUsage']?.['max'] },
+                                           { name : "min", data : globalStats['charts']?.['coresUsage']?.['min'] },
                                            { name : "p10", data : globalStats['charts']?.['coresUsage']?.['p10'] },
                                            { name : "p50", data : globalStats['charts']?.['coresUsage']?.['p50'] },
                                            { name : "p90", data : globalStats['charts']?.['coresUsage']?.['p90'] },
@@ -745,53 +800,6 @@ function Application() {
                         </div>
                         }
                         
-                        
-                        { chartSelected("Memory Total(GB)",selectedOptions) === true  &&
-                        <div>
-                            <Container header={
-                                                <Header
-                                                  variant="h2"
-                                                >
-                                                  Memory Total(GB)
-                                                </Header>
-                                                }
-                            >
-                                <ChartDots01 series={JSON.stringify([
-                                           { name : "memory", data : globalStats['charts']?.['memory'] }
-                                        ])} 
-                                        title={""} 
-                                        height="300px" 
-                                        toolbar={true}
-                                />
-                            </Container>  
-                            <br/>
-                        </div>
-                        }
-                        
-                        { chartSelected("Memory Usage(%)",selectedOptions) === true  &&
-                        <div>
-                            <Container header={
-                                                <Header
-                                                  variant="h2"
-                                                >
-                                                  Memory Usage(%)
-                                                </Header>
-                                                }
-                            >
-                                <ChartDots01 series={JSON.stringify([
-                                           { name : "p10", data : globalStats['charts']?.['memoryUsage']?.['p10'] },
-                                           { name : "p50", data : globalStats['charts']?.['memoryUsage']?.['p50'] },
-                                           { name : "p90", data : globalStats['charts']?.['memoryUsage']?.['p90'] },
-                                        ])} 
-                                        title={""} 
-                                        height="300px" 
-                                        toolbar={true}
-                                        ymax={100}
-                                />
-                            </Container>  
-                            <br/>
-                        </div>
-                        }
                             
                 </ContentLayout>
                 

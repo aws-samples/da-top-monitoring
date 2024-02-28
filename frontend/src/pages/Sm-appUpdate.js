@@ -123,7 +123,7 @@ function Application() {
           setVersionMessage([
                               {
                                 type: "info",
-                                content: "New Application version is available, new features and modules will improve workload capabilities and user experience.",
+                                content: "New Application version is available, new features and modules will improve monitoring capabilities and user experience.",
                                 dismissible: true,
                                 dismissLabel: "Dismiss message",
                                 onDismiss: () => setVersionMessage([]),

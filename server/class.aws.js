@@ -223,6 +223,24 @@ class classAWS {
         }
         
         
+        async getEMRGlobalClusterSteps(parameter){
+             
+            try {
+            
+                const command = new ListStepsCommand(parameter);
+                const response = await emr.send(command);
+                
+                return response;
+                
+            }
+            catch(err){
+                console.log(err);
+                return [];
+            }
+
+        }
+        
+        
         
         //------#################
         //------################# CloudWatch
@@ -319,9 +337,6 @@ class classAWS {
         //------################# API CORE
         //------#################
         
-        
-        
-        //------################# CloudWatch
         
         async getEMRClusters(parameter){
              

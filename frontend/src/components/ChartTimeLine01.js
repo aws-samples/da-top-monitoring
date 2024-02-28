@@ -33,6 +33,11 @@ const ChartObject = memo(({ series, height, width="100%", title, border=2, onCli
               theme: {
                 palette : "palette2"
               },
+              theme: {
+                monochrome: {
+                  enabled: true
+                }
+              },
               title: {
                 text : title,
                 align: "center",
