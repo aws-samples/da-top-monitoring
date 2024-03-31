@@ -201,7 +201,7 @@ Resources:
                   - Effect: "Allow"
                     Action:
                       - "sns:publish"
-                    Resource: "arn:aws:sns:*:${AWS::AccountId}:*"
+                    Resource: "*"
 
     EC2Instance:
         Type: "AWS::EC2::Instance"

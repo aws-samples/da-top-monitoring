@@ -36,7 +36,7 @@ sudo service nginx restart
 curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh --output install.sh
 sh install.sh
 . ~/.nvm/nvm.sh
-nvm install 20.11
+nvm install 20.11.0
 
 
 #NodeJS API Core Installation
