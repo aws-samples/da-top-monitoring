@@ -384,7 +384,7 @@ Resources:
     TimestreamDatabase:
         Type: "AWS::Timestream::Database"
         Properties:
-            DatabaseName: "emrdb"
+            DatabaseName: "emrdb1"
 
     TimestreamTable:
         Type: "AWS::Timestream::Table"
