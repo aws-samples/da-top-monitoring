@@ -1,4 +1,5 @@
 conf/run.sh
+conf/run-public.sh
 conf/sync-int.sh
 demo/
 frontend/node_modules/
